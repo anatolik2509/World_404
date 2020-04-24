@@ -1,4 +1,4 @@
-package items;
+package items.tools;
 
 import regions.Region;
 import social.Human;

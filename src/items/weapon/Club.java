@@ -1,16 +1,17 @@
-package items;
+package items.weapon;
 
+import items.Item;
 import regions.Region;
 import social.Human;
 
-public class SimpleWoodaxe extends Tool{
-    public SimpleWoodaxe(Quality quality) {
-        super(quality, 3, 30);
+public class Club extends Weapon{
+    public Club(Item.Quality quality) {
+        super(quality, 5, 20);
     }
 
     @Override
     public String getName() {
-        return "Simple woodaxe";
+        return "Club";
     }
 
     @Override
@@ -20,12 +21,12 @@ public class SimpleWoodaxe extends Tool{
 
     @Override
     public void useToRegion(Region target) {
-        //TODO chopping
+        //TODO region damage
     }
 
     @Override
     public void useToBuilding(Region target) {
-        //TODO idk
+        //TODO building damage
     }
 
 

@@ -1,9 +1,8 @@
 package regions;
 
-import items.Iron;
 import items.Item;
-import items.Stone;
-import items.util.Stackable;
+import items.material.*;
+import items.util.ItemStack;
 import world.Square;
 
 public class Mine extends Region implements Extractive{
@@ -12,43 +11,41 @@ public class Mine extends Region implements Extractive{
         resource = getSquareResource();
     }
 
-    private Stackable resource;
+    private Item resource;
 
     @Override
-    public Stackable extract(int amount) {
+    public ItemStack extract(int amount) {
         if(resource != null) {
-            Stackable s = resource.split(0);
-            s.createItems(amount);
-            return s;
+            return new ItemStack(resource, amount);
         }
         return null;
     }
 
     @Override
-    public Stackable extractiveItems() {
-        return resource.split(0);
+    public Item extractiveItems() {
+        return resource;
     }
 
-    public Stackable getSquareResource(){
+    public Item getSquareResource(){
         Square s = this.getPlace();
         switch (s.getResource()) {
             case DIAMOND:
-                return null;//TODO diamond
+                return new Diamond();
             case SILVER:
-                return null;//TODO silver
+                return new Silver();
             case GOLD:
-                return null;//TODO gold
+                return new Gold();
             case IRON:
-                return new Iron(0);
+                return new Iron();
             case STONE:
-                return new Stone(0);
+                return new Stone();
             default:
                 return null;
         }
     }
 
-    public Stackable getResource() {
-        return resource.split(0);
+    public Item getResource() {
+        return resource;
     }
 
     public static boolean canBuilt(Square s){

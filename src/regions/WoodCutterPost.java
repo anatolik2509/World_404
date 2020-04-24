@@ -1,8 +1,8 @@
 package regions;
 
 import items.Item;
-import items.Wood;
-import items.util.Stackable;
+import items.material.Wood;
+import items.util.ItemStack;
 import world.Resource;
 import world.Square;
 
@@ -12,13 +12,13 @@ public class WoodCutterPost extends Region implements Extractive{
     }
 
     @Override
-    public Stackable extract(int amount) {
-        return new Wood(amount);
+    public ItemStack extract(int amount) {
+        return new ItemStack(new Wood(), amount);
     }
 
     @Override
-    public Stackable extractiveItems() {
-        return new Wood(0);
+    public Item extractiveItems() {
+        return new Wood();
     }
 
     public static boolean canBuilt(Square s){

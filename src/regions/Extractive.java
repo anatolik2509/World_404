@@ -1,10 +1,10 @@
 package regions;
 
 import items.Item;
-import items.util.Stackable;
+import items.util.ItemStack;
 
 public interface Extractive {
-    public Stackable extract(int amount);
+    public ItemStack extract(int amount);
 
-    public Stackable extractiveItems();
+    public Item extractiveItems();
 }

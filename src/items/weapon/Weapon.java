@@ -1,5 +1,6 @@
-package items;
+package items.weapon;
 
+import items.Item;
 import items.util.Damageable;
 import items.util.Usable;
 

@@ -1,8 +1,9 @@
 package regions;
 
-import items.Meat;
 import items.Item;
-import items.util.Stackable;
+import items.food.Meat;
+import items.material.Fur;
+import items.util.ItemStack;
 import world.Resource;
 import world.Square;
 
@@ -10,35 +11,34 @@ public class HuntPost extends Region implements Extractive{
     public HuntPost(Square place){
         super(place, RegionProject.HUNT_POST);
         if(getSquareResource() == null){
-            resources = new Meat(0);
+            resources = new Meat();
         }
         else {
             resources = getSquareResource();
         }
     }
 
-    private Stackable resources;
+    private Item resources;
 
     @Override
-    public Stackable extract(int amount) {
+    public ItemStack extract(int amount) {
         if(resources != null) {
-            Stackable s = resources.split(0);
-            s.createItems(amount);
+            ItemStack s = new ItemStack(resources, amount);
             return s;
         }
         return null;
     }
 
     @Override
-    public Stackable extractiveItems() {
-        return resources.split(0);
+    public Item extractiveItems() {
+        return resources;
     }
 
-    public Stackable getSquareResource(){
+    public Item getSquareResource(){
         Square s = this.getPlace();
         switch (s.getResource()) {
             case FUR:
-                return null;//TODO fur
+                return new Fur();//TODO fur
             case ELEPHANTS:
                 return null;//TODO elephants
             default:
@@ -46,8 +46,8 @@ public class HuntPost extends Region implements Extractive{
         }
     }
 
-    public Stackable getResources() {
-        return resources.split(0);
+    public Item getResources() {
+        return resources;
     }
 
     public static boolean canBuilt(Square s){

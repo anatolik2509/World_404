@@ -1,5 +1,6 @@
-package items;
+package items.clothes;
 
+import items.Item;
 import items.util.Damageable;
 import items.util.Wearable;
 

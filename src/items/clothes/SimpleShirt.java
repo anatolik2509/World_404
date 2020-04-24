@@ -1,8 +1,9 @@
-package items;
+package items.clothes;
 
+import items.clothes.Clothes;
 import social.Human;
 
-public class SimpleShirt extends Clothes{
+public class SimpleShirt extends Clothes {
     public SimpleShirt(Quality quality) {
         super(quality, 0.25, 20);
     }

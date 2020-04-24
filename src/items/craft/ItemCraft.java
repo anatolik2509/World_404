@@ -1,7 +1,7 @@
 package items.craft;
 
 import items.Item;
-import items.util.Stackable;
+import items.util.ItemStack;
 
 import java.util.Arrays;
 
@@ -10,7 +10,7 @@ public abstract class ItemCraft {
 
     private Item item;
 
-    private Stackable[] itemTypes;
+    private ItemStack[] itemTypes;
     private int[] itemAmounts;
     private double needWorkPoints;
     private double workPoints;
@@ -26,7 +26,7 @@ public abstract class ItemCraft {
 
     public boolean checkResources(){
         for(int i = 0; i < Math.min(itemTypes.length, itemAmounts.length); i++){
-            if(itemTypes[i].getAmount() < itemAmounts[i]) {
+            if(itemTypes[i].getSize() < itemAmounts[i]) {
                 return false;
             }
         }
@@ -37,7 +37,7 @@ public abstract class ItemCraft {
         this.workPoints = workPoints;
     }
 
-    public abstract Item finish(Item.Quality quality);
+    public abstract ItemStack finish(Item.Quality quality);
 
     public Recipe getRecipe() {
         return recipe;
@@ -47,8 +47,12 @@ public abstract class ItemCraft {
         return item;
     }
 
-    public Stackable[] getItemTypes() {
-        return itemTypes;
+    public ItemStack[] getItemTypes() {
+        ItemStack[] s = new ItemStack[itemTypes.length];
+        for(int i = 0; i < s.length; i++){
+            s[i] = new ItemStack(itemTypes[i].getItem());
+        }
+        return s;
     }
 
     public int[] getItemAmounts() {

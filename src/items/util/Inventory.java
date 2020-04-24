@@ -1,11 +1,15 @@
 package items.util;
 
 import items.*;
+import items.material.Stone;
+import items.weapon.Sword;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.TreeSet;
 
 public class Inventory {
-    private ArrayList<Item> items;
+    private HashSet<ItemStack> items;
     private int maxWeight;
     private double weight;
 
@@ -13,7 +17,7 @@ public class Inventory {
 
     public Inventory(int maxWeight){
         weight = 0;
-        items = new ArrayList<>();
+        items = new HashSet<>();
         this.maxWeight = maxWeight;
     }
 
@@ -21,70 +25,53 @@ public class Inventory {
         this(DEFAULT_MAX_WEIGHT);
     }
 
-    public void put(Item item){
-        boolean flag = item.isStackable();
-        if(!flag) {
-            if (item.getItemWeight() + this.getWeight() > this.getMaxWeight()) {
-                throw new InventoryOverweightException("Max weight is " +
-                        this.getMaxWeight() +
-                        ", putted " +
-                        item.getItemWeight() +
-                        this.getWeight());
-            }
-            weight += item.getItemWeight();
-            items.add(item);
-        }
-        else {
-            Stackable st = (Stackable) item;
-            if (item.getItemWeight()*st.getAmount() + this.getWeight() > this.getMaxWeight()) {
-                throw new InventoryOverweightException("Max weight is " +
-                        this.getMaxWeight() +
-                        ", putted " +
-                        item.getItemWeight() +
-                        this.getWeight());
-            }
-            weight += item.getItemWeight()*st.getAmount();
-            for(int i = 0; i < items.size(); i++){
-                if(items.get(i).equals(item)){
-                    Stackable dest = (Stackable)items.get(i);
-                    dest.add(st);
-                    return;
-                }
-            }
-            items.add(item);
-        }
+    public boolean put(ItemStack item){
+        return put(item, item.getSize());
     }
 
-    public Item get(Item item, int amount){
-        boolean flag = item.isStackable();
-        clear();
-        if(flag) {
-            for (Item i : items) {
-                if (i.getClass() == item.getClass()) {
-                    Stackable st = (Stackable)i;
-                    return (Item)st.split(amount);
+    public boolean put(ItemStack item, int amount){
+        if(items.contains(item)){
+            for(ItemStack i : items){
+                if(i.hashCode() == item.hashCode()){
+                    if(i.equals(item)){
+                        if(weight + item.getItem().getItemWeight() * amount > maxWeight){
+                            return false;
+                        }
+
+                        boolean flag = i.merge(item.get(amount));
+                        if(flag){
+                            weight += item.getItem().getItemWeight() * amount;
+                        }
+                        return flag;
+                    }
                 }
             }
         }
-        else{
-            for (int i = 0; i < items.size(); i++) {
-                if (items.get(i).getClass() == item.getClass()) {
-                   Item r = items.get(i);
-                   items.remove(i);
-                   return r;
+        boolean flag = items.add(item.get(amount));
+        if(flag){
+            weight += item.getItem().getItemWeight() * amount;
+        }
+        return flag;
+    }
+
+    public ItemStack get(Item item, int amount){
+        ItemStack s = new ItemStack(item);
+        if(items.contains(s)){
+            for(ItemStack i : items){
+                if(i.hashCode() == s.hashCode()){
+                    if(i.equals(s)){
+                        s.merge(i.get(amount));
+                        weight -= s.getStackWeight();
+                        return s;
+                    }
                 }
             }
         }
-        throw new ItemDoesNotExistException("No " + item + " in this inventory");
+        return null;
     }
 
     public boolean hasItem(Item item){
-        for(Item i : items){
-            if(i.getClass() == item.getClass()){
-                return true;
-            }
-        }
-        return false;
+        return items.contains(new ItemStack(item));
     }
 
     public int getMaxWeight() {
@@ -100,23 +87,7 @@ public class Inventory {
     }
 
     private void clear(){
-        Item item;
-        for (int j = 0; j < items.size(); j++) {
-            item = items.get(j);
-            boolean flag = item.isStackable();
-            if(flag){
-                Stackable st = (Stackable)item;
-                if(st.getAmount() == 0){
-                    items.remove(j);
-                }
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        Inventory inventory = new Inventory();
-        inventory.put(new Sword(Item.Quality.NORMAL));
-        inventory.put(new Stone(10));
-        inventory.put(new Stone(20));
+        items.clear();
+        weight = 0;
     }
 }

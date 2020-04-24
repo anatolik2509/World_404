@@ -1,6 +1,9 @@
 package items;
 
-import items.util.Stackable;
+import items.clothes.Clothes;
+import items.food.Food;
+import items.material.Material;
+import items.weapon.Weapon;
 
 import java.util.Objects;
 
@@ -9,13 +12,22 @@ public abstract class Item {
     private Quality quality;
 
     public enum Quality {
-        AWFUL,
-        VERY_BAD,
-        BAD,
-        NORMAL,
-        GOOD,
-        VERY_GOOD,
-        GREAT;
+        AWFUL(0),
+        VERY_BAD(1),
+        BAD(2),
+        NORMAL(3),
+        GOOD(4),
+        VERY_GOOD(5),
+        GREAT(6);
+
+        private int points;
+        Quality(int points){
+            this.points = points;
+        }
+
+        public int getPoints() {
+            return points;
+        }
     }
 
     public enum Type{
@@ -36,7 +48,7 @@ public abstract class Item {
 
     public abstract String getName();
 
-    public static double getItemWeight() {
+    public double getItemWeight() {
         return itemWeight;
     }
 
@@ -46,10 +58,6 @@ public abstract class Item {
 
     public Type getType() {
         return type;
-    }
-
-    public boolean isStackable(){
-        return this instanceof Stackable;
     }
 
     public boolean isFood(){
@@ -88,6 +96,6 @@ public abstract class Item {
 
     @Override
     public int hashCode() {
-        return Objects.hash(quality);
+        return Objects.hash(quality, getClass());
     }
 }

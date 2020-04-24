@@ -1,10 +1,11 @@
-package items;
+package items.clothes;
 
+import items.clothes.Clothes;
 import social.Human;
 
-public class SimplePants extends Clothes{
+public class SimplePants extends Clothes {
     public SimplePants(Quality quality) {
-        super(quality, 1, 20);
+        super(quality, 0.25, 20);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package items.craft;
 
-import items.Club;
+import items.util.ItemStack;
+import items.weapon.Club;
 import items.Item;
 
 public class ClubCraft extends ItemCraft{
@@ -9,9 +10,9 @@ public class ClubCraft extends ItemCraft{
     }
 
     @Override
-    public Item finish(Item.Quality quality) {
+    public ItemStack finish(Item.Quality quality) {
         if(getNeedWorkPoints() <= getWorkPoints()) {
-            return new Club(quality);
+            return new ItemStack(new Club(quality), 1);
         }
         return null;
     }

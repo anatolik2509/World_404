@@ -1,6 +1,5 @@
-package items;
+package items.weapon;
 
-import regions.Region;
 import social.Human;
 
 public class Sword extends Weapon {

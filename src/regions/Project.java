@@ -1,13 +1,13 @@
 package regions;
 
-import items.util.Stackable;
+import items.util.ItemStack;
 import world.Square;
 
 public class Project extends Region{
 
     private Region regionProject;
 
-    private Stackable[] itemTypes;
+    private ItemStack[] itemTypes;
     private int[] itemAmounts;
 
     private int workPoints;
@@ -33,7 +33,7 @@ public class Project extends Region{
 
     public boolean checkResources(){
         for(int i = 0; i < Math.min(itemTypes.length, itemAmounts.length); i++){
-            if(itemTypes[i].getAmount() < itemAmounts[i]) {
+            if(itemTypes[i].getSize() < itemAmounts[i]) {
                 return false;
             }
         }
@@ -44,7 +44,7 @@ public class Project extends Region{
         return regionProject;
     }
 
-    public Stackable[] getItemTypes() {
+    public ItemStack[] getItemTypes() {
         return itemTypes;
     }
 
